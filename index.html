@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Expense Tracker</title>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode"> <!-- Default to dark mode for premium feel, can be toggled -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>SmartTracker</span>
+                </div>
+                <button class="mobile-menu-close" id="mobile-menu-close">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-target="transactions">
+                    <i class="fa-solid fa-list-ul"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="#" class="nav-item" data-target="budget">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <span>Budget</span>
+                </a>
+                <a href="#" class="nav-item" data-target="analytics">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="nav-item" data-target="reports">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="#" class="nav-item" data-target="settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item logout-btn" id="logout-btn" style="margin-top: 2rem; color: var(--danger-color);">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h1 class="page-title" id="page-title">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="live-clock" style="padding: 0.5rem 1rem; margin-right: 1rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.9rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; box-shadow: var(--shadow-soft);">
+                        <i class="fa-regular fa-clock text-muted"></i>
+                        <span id="top-live-clock">--:--</span>
+                    </div>
+                    <button class="theme-toggle tool-btn" id="calc-toggle" aria-label="Calculator" title="Calculator">
+                        <i class="fa-solid fa-calculator"></i>
+                    </button>
+                    <button class="theme-toggle tool-btn" id="notes-toggle" aria-label="Notepad" title="Notepad">
+                        <i class="fa-solid fa-note-sticky"></i>
+                    </button>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+                        <i class="fa-solid fa-sun" id="theme-icon"></i>
+                    </button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=User&background=6c5ce7&color=fff" alt="User Profile" class="avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Sections Container -->
+            <div class="sections-container">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="view-section active">
+                    <div class="summary-cards">
+                        <div class="glass-card summary-card balance-card">
+                            <div class="card-icon"><i class="fa-solid fa-building-columns"></i></div>
+                            <div class="card-details">
+                                <p>Total Balance</p>
+                                <h3 id="dash-balance">$0.00</h3>
+                            </div>
+                        </div>
+                        <div class="glass-card summary-card income-card">
+                            <div class="card-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                            <div class="card-details">
+                                <p>Total Income</p>
+                                <h3 id="dash-income">$0.00</h3>
+                            </div>
+                        </div>
+                        <div class="glass-card summary-card expense-card">
+                            <div class="card-icon"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                            <div class="card-details">
+                                <p>Total Expenses</p>
+                                <h3 id="dash-expense">$0.00</h3>
+                            </div>
+                        </div>
+                        <div class="glass-card summary-card savings-card">
+                            <div class="card-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+                            <div class="card-details">
+                                <p>Savings</p>
+                                <h3 id="dash-savings">$0.00</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="glass-card chart-container-mini">
+                            <div class="card-header">
+                                <h3>Today's Summary</h3>
+                            </div>
+                            <div class="today-summary">
+                                <div class="today-item">
+                                    <span>Income</span>
+                                    <span class="text-success" id="today-income">+$0.00</span>
+                                </div>
+                                <div class="today-item">
+                                    <span>Expense</span>
+                                    <span class="text-danger" id="today-expense">-$0.00</span>
+                                </div>
+                            </div>
+                            <div class="mini-chart">
+                                <canvas id="miniExpenseChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="glass-card recent-transactions-widget">
+                            <div class="card-header">
+                                <h3>Recent Transactions</h3>
+                                <button class="btn-text" id="view-all-btn">View All</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="transactions-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Category</th>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-transactions-tbody">
+                                        <!-- Populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="empty-state" id="dashboard-empty-state">
+                                <i class="fa-solid fa-receipt"></i>
+                                <p>No transactions yet</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes Display Widget -->
+                    <div class="glass-card mt-4 notes-widget" style="margin-top: 1.5rem;">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-note-sticky text-primary" style="margin-right: 0.5rem;"></i> My Notes</h3>
+                            <button class="btn-text" id="edit-notes-btn">Open Notepad</button>
+                        </div>
+                        <div class="notes-grid" id="dashboard-notes-display">
+                            <p class="text-muted">No notes saved. Click "Open Notepad" or the icon to add some!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Transactions Section -->
+                <section id="transactions" class="view-section">
+                    <div class="glass-card">
+                        <div class="filters-container">
+                            <div class="search-box">
+                                <i class="fa-solid fa-search"></i>
+                                <input type="text" id="search-transaction" placeholder="Search transactions...">
+                            </div>
+                            <div class="filter-group">
+                                <select id="filter-type" class="glass-input">
+                                    <option value="all">All Types</option>
+                                    <option value="income">Income</option>
+                                    <option value="expense">Expense</option>
+                                </select>
+                                <select id="filter-category" class="glass-input">
+                                    <option value="all">All Categories</option>
+                                    <!-- Populated dynamically -->
+                                </select>
+                                <input type="month" id="filter-month" class="glass-input">
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive mt-4">
+                            <table class="transactions-table full-table">
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="all-transactions-tbody">
+                                    <!-- Populated via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="empty-state" id="transactions-empty-state">
+                            <i class="fa-solid fa-magnifying-glass-dollar"></i>
+                            <p>No transactions found</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Budget Section -->
+                <section id="budget" class="view-section">
+                    <div class="budget-grid">
+                        <div class="glass-card">
+                            <h3>Set Monthly Budget</h3>
+                            <form id="budget-form" class="mt-3">
+                                <div class="form-group">
+                                    <label for="budget-amount">Total Budget Amount</label>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fa-solid fa-dollar-sign"></i>
+                                        <input type="text" id="budget-amount" class="glass-input pl-4" placeholder="e.g. 2,000" required inputmode="decimal">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Save Budget</button>
+                            </form>
+                        </div>
+                        
+                        <div class="glass-card budget-status-card">
+                            <h3>Budget Overview</h3>
+                            <div class="budget-stats mt-3">
+                                <div class="stat">
+                                    <span class="label">Target</span>
+                                    <span class="value" id="budget-target">$0.00</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="label">Spent</span>
+                                    <span class="value text-danger" id="budget-spent">$0.00</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="label">Remaining</span>
+                                    <span class="value text-success" id="budget-remaining">$0.00</span>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container mt-4">
+                                <div class="progress-header">
+                                    <span>Usage</span>
+                                    <span id="budget-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill" id="budget-progress-fill"></div>
+                                </div>
+                            </div>
+                            <div id="budget-warning" class="alert warning-alert hidden mt-3">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>You have exceeded your monthly budget!</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics Section -->
+                <section id="analytics" class="view-section">
+                    <div class="analytics-grid">
+                        <div class="glass-card chart-card">
+                            <h3>Expense Distribution</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="expensePieChart"></canvas>
+                            </div>
+                            <div class="empty-chart hidden" id="pie-empty">No expense data available</div>
+                        </div>
+                        <div class="glass-card chart-card">
+                            <h3>Monthly Spending Trend</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="trendLineChart"></canvas>
+                            </div>
+                            <div class="empty-chart hidden" id="line-empty">No trend data available</div>
+                        </div>
+                        <div class="glass-card chart-card full-width">
+                            <h3>Income vs Expense (Last 6 Months)</h3>
+                            <div class="chart-wrapper bar-chart-wrapper">
+                                <canvas id="monthlyBarChart"></canvas>
+                            </div>
+                            <div class="empty-chart hidden" id="bar-empty">No comparison data available</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reports Section -->
+                <section id="reports" class="view-section">
+                    <div class="glass-card">
+                        <div class="report-header">
+                            <h3>Financial Reports</h3>
+                            <div class="report-actions">
+                                <button class="btn btn-secondary" id="export-csv"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                                <button class="btn btn-primary" id="export-pdf"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-summary mt-4">
+                            <div class="report-box">
+                                <h4>Current Month</h4>
+                                <p class="report-val" id="report-month-net">$0.00</p>
+                                <span class="report-label">Net Income</span>
+                            </div>
+                            <div class="report-box">
+                                <h4>Current Year</h4>
+                                <p class="report-val" id="report-year-net">$0.00</p>
+                                <span class="report-label">Net Income</span>
+                            </div>
+                            <div class="report-box">
+                                <h4>Top Expense Category</h4>
+                                <p class="report-val" id="report-top-category">-</p>
+                                <span class="report-label">This Month</span>
+                            </div>
+                        </div>
+
+                        <div id="pdf-content-area" class="mt-4">
+                            <!-- This area can be used to render a clean printable view if needed -->
+                            <p class="text-muted">A comprehensive summary of your finances based on the selected period.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="view-section">
+                    <div class="settings-grid">
+                        <div class="glass-card">
+                            <h3>Preferences</h3>
+                            <div class="settings-group mt-3">
+                                <label for="currency-select">Currency</label>
+                                <select id="currency-select" class="glass-input">
+                                    <option value="USD">USD ($)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                    <option value="GBP">GBP (£)</option>
+                                    <option value="JPY">JPY (¥)</option>
+                                    <option value="INR">INR (₹)</option>
+                                </select>
+                            </div>
+                            <div class="settings-group mt-3 toggle-group">
+                                <div>
+                                    <label>Dark Mode</label>
+                                    <p class="text-muted text-sm">Switch between dark and light themes.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="settings-theme-toggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="settings-group mt-3 toggle-group">
+                                <div>
+                                    <label>Notifications</label>
+                                    <p class="text-muted text-sm">Enable toast notifications for actions.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="settings-notifications-toggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="glass-card">
+                            <h3>Data Management</h3>
+                            <p class="text-muted text-sm mb-4">Your data is stored locally in your browser. You can back it up or clear it entirely.</p>
+                            
+                            <div class="data-actions">
+                                <button class="btn btn-secondary btn-block mb-3" id="backup-data">
+                                    <i class="fa-solid fa-download"></i> Backup Data (JSON)
+                                </button>
+                                
+                                <div class="file-upload-wrapper mb-3">
+                                    <button class="btn btn-secondary btn-block" onclick="document.getElementById('restore-file').click()">
+                                        <i class="fa-solid fa-upload"></i> Restore Data
+                                    </button>
+                                    <input type="file" id="restore-file" accept=".json" style="display: none;">
+                                </div>
+
+                                <button class="btn btn-danger btn-block mt-4" id="clear-data">
+                                    <i class="fa-solid fa-trash-can"></i> Clear All Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="fab-add" aria-label="Add Transaction">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <!-- Add/Edit Transaction Modal -->
+    <div class="modal-overlay" id="transaction-modal">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Transaction</h3>
+                <button class="close-modal" id="close-modal-btn"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="transaction-form">
+                    <input type="hidden" id="trans-id">
+                    <div class="type-selector mb-3">
+                        <input type="radio" id="type-expense" name="trans-type" value="expense" checked>
+                        <label for="type-expense" class="type-btn expense-btn">Expense</label>
+                        
+                        <input type="radio" id="type-income" name="trans-type" value="income">
+                        <label for="type-income" class="type-btn income-btn">Income</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="trans-amount">Amount</label>
+                        <input type="text" id="trans-amount" class="glass-input" placeholder="0.00" required inputmode="decimal">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="trans-desc">Description</label>
+                        <input type="text" id="trans-desc" class="glass-input" placeholder="e.g. Groceries" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="trans-category">Category</label>
+                        <select id="trans-category" class="glass-input" required>
+                            <!-- Dynamic based on type -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="trans-date">Date & Time</label>
+                        <input type="datetime-local" id="trans-date" class="glass-input" required>
+                    </div>
+
+                    <div class="modal-actions mt-4">
+                        <button type="button" class="btn btn-secondary" id="cancel-modal-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="save-trans-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirm-modal">
+        <div class="modal glass-card confirm-modal">
+            <div class="modal-body text-center">
+                <div class="confirm-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h3>Are you sure?</h3>
+                <p id="confirm-message">Do you really want to delete this item? This process cannot be undone.</p>
+                <div class="modal-actions mt-4">
+                    <button class="btn btn-secondary" id="cancel-confirm-btn">Cancel</button>
+                    <button class="btn btn-danger" id="do-confirm-btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Modal -->
+    <div class="modal-overlay" id="calculator-modal">
+        <div class="modal glass-card" style="max-width: 350px;">
+            <div class="modal-header">
+                <h3>Calculator</h3>
+                <button class="close-modal" id="close-calc-btn"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="calculator-container">
+                    <input type="text" id="calc-display" class="glass-input calc-display" readonly value="0">
+                    <div class="calc-grid">
+                        <button class="btn btn-secondary calc-btn calc-action" data-action="percent">%</button>
+                        <button class="btn btn-secondary calc-btn calc-action" data-action="ce">CE</button>
+                        <button class="btn btn-secondary calc-btn calc-clear">C</button>
+                        <button class="btn btn-secondary calc-btn calc-op calc-del"><i class="fa-solid fa-delete-left"></i></button>
+                        
+                        <button class="btn btn-secondary calc-btn calc-action" data-action="inverse">1/x</button>
+                        <button class="btn btn-secondary calc-btn calc-action" data-action="square">x²</button>
+                        <button class="btn btn-secondary calc-btn calc-action" data-action="sqrt">√x</button>
+                        <button class="btn btn-secondary calc-btn calc-op" data-op="/">÷</button>
+                        
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="7">7</button>
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="8">8</button>
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="9">9</button>
+                        <button class="btn btn-secondary calc-btn calc-op" data-op="*">×</button>
+                        
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="4">4</button>
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="5">5</button>
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="6">6</button>
+                        <button class="btn btn-secondary calc-btn calc-op" data-op="-">−</button>
+                        
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="1">1</button>
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="2">2</button>
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="3">3</button>
+                        <button class="btn btn-secondary calc-btn calc-op" data-op="+">+</button>
+                        
+                        <button class="btn btn-secondary calc-btn calc-action" data-action="sign">+/-</button>
+                        <button class="btn btn-secondary calc-btn calc-num" data-num="0">0</button>
+                        <button class="btn btn-secondary calc-btn calc-num" data-num=".">.</button>
+                        <button class="btn btn-primary calc-btn calc-equals">=</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notepad Modal -->
+    <div class="modal-overlay" id="notepad-modal">
+        <div class="modal glass-card notepad-modal-container">
+            <div class="modal-header">
+                <h3>Notepad</h3>
+                <button class="close-modal" id="close-notes-btn"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-body notepad-split-view">
+                <div class="notepad-sidebar">
+                    <button class="btn btn-primary btn-block mb-3" id="new-note-btn"><i class="fa-solid fa-plus"></i> New Note</button>
+                    <div id="notes-list" class="notes-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+                <div class="notepad-editor" id="notepad-editor-section" style="display: none;">
+                    <div class="flex-between mb-2">
+                        <div style="flex: 1; display: flex; flex-direction: column; margin-right: 1rem;">
+                            <div style="display: flex; align-items: center; border-bottom: 2px dashed rgba(255,255,255,0.2);">
+                                <span style="font-weight: 600; color: var(--text-muted); margin-right: 0.5rem;">Title</span>
+                                <input type="text" id="notepad-title" class="glass-input" placeholder="Type here..." style="font-weight: 600; font-size: 1.1rem; border: none; padding: 0.25rem 0; background: transparent; box-shadow: none; width: 100%;">
+                            </div>
+                            <div style="margin-top: 0.25rem; font-size: 0.8rem; color: var(--text-muted);" id="notepad-date-display">
+                                <!-- Automatically updated with date/day/month -->
+                            </div>
+                        </div>
+                        <button class="btn btn-danger btn-icon" id="delete-note-btn" title="Delete Note" style="padding: 0.5rem; background: transparent; color: var(--danger-color); border: none;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <textarea id="notepad-textarea" class="glass-input notepad-textarea" placeholder="Start typing..."></textarea>
+                    <div class="modal-actions mt-4" style="justify-content: space-between;">
+                        <span id="notepad-status" class="text-sm text-muted">Synced</span>
+                        <button class="btn btn-primary" id="save-notes-btn">Save</button>
+                    </div>
+                </div>
+                <div class="notepad-empty-state" id="notepad-empty-state" style="display: flex; align-items: center; justify-content: center; width: 100%; min-height: 250px;">
+                    <div class="text-center text-muted">
+                        <i class="fa-solid fa-note-sticky fa-3x mb-3" style="opacity: 0.5;"></i>
+                        <p>Select a note or create a new one.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom JS -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>

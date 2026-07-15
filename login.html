@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome | Smart Expense Tracker</title>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body class="dark-mode auth-body">
+    <div class="auth-container">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle auth-theme-toggle" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+            <i class="fa-solid fa-sun" id="theme-icon"></i>
+        </button>
+
+        <div class="auth-glass-panel">
+            <!-- Illustration / Branding Side -->
+            <div class="auth-illustration">
+                <div class="circles-bg">
+                    <div class="circle circle-1"></div>
+                    <div class="circle circle-2"></div>
+                </div>
+                <div class="illustration-content">
+                    <div class="logo-large">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <h2>SmartTracker</h2>
+                    <p>Take control of your finances with intelligent insights and seamless tracking.</p>
+                </div>
+            </div>
+            
+            <!-- Forms Side -->
+            <div class="auth-form-section">
+                <!-- Login Form -->
+                <div class="form-container active" id="login-container">
+                    <div class="form-header">
+                        <h2>Welcome Back</h2>
+                        <p class="text-muted">Enter your credentials to access your account</p>
+                    </div>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" id="login-email" class="glass-input pl-4" placeholder="name@example.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <div class="flex-between">
+                                <label for="login-password">Password</label>
+                                <a href="#" class="forgot-link text-sm">Forgot Password?</a>
+                            </div>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="login-password" class="glass-input pl-4" placeholder="••••••••" required>
+                                <i class="fa-solid fa-eye-slash toggle-password"></i>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </form>
+                    <div class="auth-divider">
+                        <span>OR</span>
+                    </div>
+                    <div class="social-login">
+                        <button id="google-login-btn" class="btn btn-secondary social-btn" aria-label="Sign in with Google"><i class="fa-brands fa-google"></i></button>
+                        <button class="btn btn-secondary social-btn" aria-label="Sign in with Apple"><i class="fa-brands fa-apple"></i></button>
+                    </div>
+                    <p class="auth-switch">Don't have an account? <a href="#" id="go-to-signup">Sign up</a></p>
+                </div>
+
+                <!-- Sign Up Form -->
+                <div class="form-container" id="signup-container">
+                    <div class="form-header">
+                        <h2>Create Account</h2>
+                        <p class="text-muted">Start your financial journey with us</p>
+                    </div>
+                    <form id="signup-form">
+                        <div class="form-group">
+                            <label for="signup-name">Full Name</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="signup-name" class="glass-input pl-4" placeholder="John Doe" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-email">Email</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" id="signup-email" class="glass-input pl-4" placeholder="name@example.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-password">Password</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="signup-password" class="glass-input pl-4" placeholder="••••••••" required>
+                                <i class="fa-solid fa-eye-slash toggle-password"></i>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="signup-confirm-password">Confirm Password</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="signup-confirm-password" class="glass-input pl-4" placeholder="••••••••" required>
+                                <i class="fa-solid fa-eye-slash toggle-password"></i>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                    </form>
+                    <div class="auth-divider">
+                        <span>OR</span>
+                    </div>
+                    <div class="social-login">
+                        <button id="google-signup-btn" class="btn btn-secondary social-btn" aria-label="Sign up with Google"><i class="fa-brands fa-google"></i></button>
+                        <button class="btn btn-secondary social-btn" aria-label="Sign up with Apple"><i class="fa-brands fa-apple"></i></button>
+                    </div>
+                    <p class="auth-switch">Already have an account? <a href="#" id="go-to-login">Sign in</a></p>
+                <!-- Forgot Password Form -->
+                <div class="form-container" id="forgot-password-container" style="display: none;">
+                    <div class="form-header">
+                        <h2>Reset Password</h2>
+                        <p class="text-muted">Enter your email to receive a reset link</p>
+                    </div>
+                    <form id="forgot-password-form">
+                        <div class="form-group mb-4">
+                            <label for="forgot-email">Email</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" id="forgot-email" class="glass-input pl-4" placeholder="name@example.com" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Send Reset Link</button>
+                    </form>
+                    <p class="auth-switch mt-4"><a href="#" id="back-to-login">Back to Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="auth.js"></script>
+</body>
+</html>
