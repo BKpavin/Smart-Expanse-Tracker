@@ -8,7 +8,8 @@
     background-image: 
         radial-gradient(circle at 15% 50%, rgba(67, 24, 255, 0.08), transparent 25%),
         radial-gradient(circle at 85% 30%, rgba(5, 205, 153, 0.08), transparent 25%);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .auth-theme-toggle {
@@ -260,18 +261,62 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    .auth-body {
+        padding: 2rem 0;
+        align-items: flex-start;
+    }
+    .auth-container {
+        padding: 1rem;
+    }
     .auth-glass-panel {
         flex-direction: column;
         min-height: auto;
     }
     .auth-illustration {
-        padding: 3rem 2rem;
+        padding: 1.5rem 1rem;
+        display: none !important; /* Force hide illustration on mobile */
     }
     .auth-form-section {
-        padding: 2rem;
+        padding: 1.5rem 1rem;
+    }
+    .form-header {
+        margin-bottom: 1rem;
+    }
+    .form-header h2 {
+        font-size: 1.35rem;
+    }
+    .form-header p {
+        font-size: 0.85rem;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .form-group label {
+        font-size: 0.8rem;
+        margin-bottom: 0.25rem;
+    }
+    .glass-input {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    .btn {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    .social-login {
+        margin-bottom: 1rem;
+    }
+    .social-btn {
+        padding: 0.5rem;
+        font-size: 1.1rem;
+    }
+    .auth-divider {
+        margin: 1rem 0;
     }
     .auth-theme-toggle {
         top: 1rem;
         right: 1rem;
     }
 }
+
+
