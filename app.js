@@ -842,7 +842,7 @@ function updateCharts() {
             plugins: { legend: { display: false }, tooltip: { enabled: true } },
             scales: {
                 y: { display: false, beginAtZero: true },
-                x: { grid: { display: false }, border: { display: false } }
+                x: { grid: { display: false }, border: { display: false }, ticks: { display: false } }
             }
         }
     });
