@@ -283,6 +283,7 @@ function setupEventListeners() {
         budget.amount = parseFloat(amountStr) || 0;
         saveBudget();
         showToast('Budget saved successfully!', 'success');
+        sendEmailNotification('Budget Updated', { amount: budget.amount });
     });
 
     elements.currencySelect.addEventListener('change', (e) => {
@@ -308,6 +309,7 @@ function setupEventListeners() {
                 catch (e) { }
             }
             showToast('All data cleared.', 'success');
+            sendEmailNotification('All Data Cleared', { description: 'All transactions and budget were deleted.' });
         });
     });
 
@@ -385,6 +387,31 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+// --- EMAIL NOTIFICATIONS ---
+function sendEmailNotification(action, details = {}) {
+    if (window.emailjs && currentUser && currentUser.email) {
+        let message = `Action: ${action}\n`;
+        for (let key in details) {
+            message += `${key}: ${details[key]}\n`;
+        }
+        
+        emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+            to_email: currentUser.email,
+            action: action,
+            message: message,
+            transaction_type: details.type ? details.type.toUpperCase() : "N/A",
+            amount: details.amount !== undefined ? details.amount : "N/A",
+            category: details.category || "N/A",
+            description: details.desc || details.description || "N/A",
+            date: details.date || new Date().toISOString()
+        }).then(() => {
+            console.log(`Email notification sent successfully for: ${action}`);
+        }).catch((err) => {
+            console.error("Failed to send email notification", err);
+        });
+    }
+}
+
 // --- TRANSACTION MANAGEMENT ---
 function openTransactionModal(trans = null) {
     elements.transactionModal.classList.add('active');
@@ -444,22 +471,7 @@ async function handleTransactionSubmit(e) {
         showToast(id ? 'Transaction updated' : 'Transaction added', 'success');
         closeTransactionModal();
         
-        // --- SEND AUTOMATED EMAILJS NOTIFICATION ---
-        // TODO: USER MUST REPLACE "YOUR_SERVICE_ID" AND "YOUR_TEMPLATE_ID"
-        if (!id && window.emailjs && currentUser.email) {
-            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-                to_email: currentUser.email,
-                transaction_type: type.toUpperCase(),
-                amount: amount,
-                category: category,
-                description: desc,
-                date: date
-            }).then(() => {
-                console.log("Email notification sent successfully!");
-            }).catch((err) => {
-                console.error("Failed to send email notification", err);
-            });
-        }
+        sendEmailNotification(id ? 'Transaction Updated' : 'Transaction Added', trans);
 
     } catch (error) {
         showToast('Error saving transaction', 'error');
@@ -473,6 +485,7 @@ function deleteTransaction(id) {
         try {
             await deleteDoc(doc(db, "users", currentUser.uid, "transactions", id));
             showToast('Transaction deleted', 'success');
+            sendEmailNotification('Transaction Deleted', { description: `Transaction ID: ${id}` });
         } catch (error) {
             showToast('Error deleting transaction', 'error');
         }
