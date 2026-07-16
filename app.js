@@ -825,27 +825,33 @@ function updateCharts() {
     const todayInc = transactions.filter(t => t.type === 'income' && t.date && t.date.startsWith(todayStr)).reduce((s, t) => s + t.amount, 0);
 
     if (charts.mini) charts.mini.destroy();
-    const ctxMini = document.getElementById('miniExpenseChart').getContext('2d');
-    charts.mini = new Chart(ctxMini, {
-        type: 'bar',
-        data: {
-            labels: ['Income', 'Expense'],
-            datasets: [{
-                data: [todayInc, todayExp],
-                backgroundColor: ['#05cd99', '#ee5d50'],
-                borderRadius: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false }, tooltip: { enabled: true } },
-            scales: {
-                y: { display: false, beginAtZero: true },
-                x: { grid: { display: false }, border: { display: false }, ticks: { display: false } }
+    
+    if (todayInc > 0 || todayExp > 0) {
+        document.getElementById('miniExpenseChart').style.display = 'block';
+        const ctxMini = document.getElementById('miniExpenseChart').getContext('2d');
+        charts.mini = new Chart(ctxMini, {
+            type: 'bar',
+            data: {
+                labels: ['Income', 'Expense'],
+                datasets: [{
+                    data: [todayInc, todayExp],
+                    backgroundColor: ['#05cd99', '#ee5d50'],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: true } },
+                scales: {
+                    y: { display: false, beginAtZero: true },
+                    x: { grid: { display: false }, border: { display: false } }
+                }
             }
-        }
-    });
+        });
+    } else {
+        document.getElementById('miniExpenseChart').style.display = 'none';
+    }
 }
 
 // --- UTILITIES (Toast & Data) ---
