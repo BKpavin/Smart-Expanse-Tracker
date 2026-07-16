@@ -443,6 +443,24 @@ async function handleTransactionSubmit(e) {
         await setDoc(doc(db, "users", currentUser.uid, "transactions", idToUse), trans);
         showToast(id ? 'Transaction updated' : 'Transaction added', 'success');
         closeTransactionModal();
+        
+        // --- SEND AUTOMATED EMAILJS NOTIFICATION ---
+        // TODO: USER MUST REPLACE "YOUR_SERVICE_ID" AND "YOUR_TEMPLATE_ID"
+        if (!id && window.emailjs && currentUser.email) {
+            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+                to_email: currentUser.email,
+                transaction_type: type.toUpperCase(),
+                amount: amount,
+                category: category,
+                description: desc,
+                date: date
+            }).then(() => {
+                console.log("Email notification sent successfully!");
+            }).catch((err) => {
+                console.error("Failed to send email notification", err);
+            });
+        }
+
     } catch (error) {
         showToast('Error saving transaction', 'error');
         console.error(error);
