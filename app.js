@@ -7,13 +7,7 @@ let currentUser = null;
 let transactions = [];
 let notesArray = [];
 let selectedNoteId = null;
-let goals = [];
 let budget = { amount: 0 };
-let unsubSettings = null;
-let unsubBudget = null;
-let unsubTransactions = null;
-let unsubNotepad = null;
-let unsubGoals = null;
 let settings = {
     currency: 'USD',
     darkMode: true,
@@ -110,13 +104,11 @@ function initFirebaseData(uid) {
     const settingsRef = doc(userDocRef, "data", "settings");
     const notepadRef = doc(userDocRef, "data", "notepad");
     const transactionsRef = collection(userDocRef, "transactions");
-    const goalsRef = collection(userDocRef, "goals");
 
     if (unsubSettings) unsubSettings();
     if (unsubBudget) unsubBudget();
     if (unsubTransactions) unsubTransactions();
     if (unsubNotepad) unsubNotepad();
-    if (unsubGoals) unsubGoals();
 
     unsubSettings = onSnapshot(settingsRef, (docSnap) => {
         if (docSnap.exists()) {
@@ -173,14 +165,6 @@ function initFirebaseData(uid) {
         transData.sort((a, b) => new Date(b.date) - new Date(a.date));
         transactions = transData;
         updateAllViews();
-    });
-
-    unsubGoals = onSnapshot(goalsRef, (querySnapshot) => {
-        goals = [];
-        querySnapshot.forEach((doc) => {
-            goals.push({ id: doc.id, ...doc.data() });
-        });
-        renderGoals();
     });
 }
 
@@ -344,127 +328,9 @@ function setupEventListeners() {
             await signOut(auth);
         });
     }
-
-    // Goals event listeners
-    const addGoalBtn = document.getElementById('add-goal-btn');
-    const closeGoalModalBtn = document.getElementById('close-goal-modal');
-    const goalModal = document.getElementById('goal-modal');
-    const goalForm = document.getElementById('goal-form');
-
-    if (addGoalBtn) {
-        addGoalBtn.addEventListener('click', () => {
-            document.getElementById('goal-id').value = '';
-            document.getElementById('goal-modal-title').innerText = 'Add Goal';
-            goalForm.reset();
-            goalModal.classList.add('active');
-        });
-    }
-
-    if (closeGoalModalBtn) {
-        closeGoalModalBtn.addEventListener('click', () => goalModal.classList.remove('active'));
-    }
-
-    if (goalForm) {
-        goalForm.addEventListener('submit', handleGoalSubmit);
-    }
 }
 
 // --- CORE FUNCTIONS ---
-
-// --- GOALS FUNCTIONS ---
-async function handleGoalSubmit(e) {
-    e.preventDefault();
-    const id = document.getElementById('goal-id').value;
-    const name = document.getElementById('goal-name').value;
-    const target = parseFloat(document.getElementById('goal-target').value);
-    const saved = parseFloat(document.getElementById('goal-saved').value) || 0;
-
-    const goalData = {
-        name,
-        target,
-        saved,
-        timestamp: id ? undefined : Date.now()
-    };
-
-    try {
-        if (id) {
-            await setDoc(doc(db, "users", currentUser.uid, "goals", id), goalData, { merge: true });
-            showToast('Goal updated successfully');
-        } else {
-            const newDocRef = doc(collection(db, "users", currentUser.uid, "goals"));
-            await setDoc(newDocRef, goalData);
-            showToast('Goal added successfully');
-        }
-        document.getElementById('goal-modal').classList.remove('active');
-    } catch (err) {
-        console.error("Error saving goal", err);
-        showToast('Error saving goal', 'error');
-    }
-}
-
-window.deleteGoal = async function(id) {
-    if (confirm('Are you sure you want to delete this goal?')) {
-        try {
-            await deleteDoc(doc(db, "users", currentUser.uid, "goals", id));
-            showToast('Goal deleted');
-        } catch (err) {
-            console.error("Error deleting goal", err);
-            showToast('Error deleting goal', 'error');
-        }
-    }
-}
-
-window.editGoal = function(id) {
-    const goal = goals.find(g => g.id === id);
-    if (!goal) return;
-    document.getElementById('goal-id').value = goal.id;
-    document.getElementById('goal-name').value = goal.name;
-    document.getElementById('goal-target').value = goal.target;
-    document.getElementById('goal-saved').value = goal.saved;
-    document.getElementById('goal-modal-title').innerText = 'Edit Goal';
-    document.getElementById('goal-modal').classList.add('active');
-}
-
-function renderGoals() {
-    const grid = document.getElementById('goals-grid');
-    const emptyState = document.getElementById('goals-empty-state');
-    if (!grid) return;
-
-    if (goals.length === 0) {
-        grid.innerHTML = '';
-        if (emptyState) emptyState.classList.remove('hidden');
-        return;
-    }
-
-    if (emptyState) emptyState.classList.add('hidden');
-    
-    let html = '';
-    goals.sort((a,b) => a.timestamp - b.timestamp).forEach(goal => {
-        const percentage = Math.min(100, Math.round((goal.saved / goal.target) * 100)) || 0;
-        
-        html += `
-            <div class="goal-card">
-                <div class="goal-card-header">
-                    <h4>${goal.name}</h4>
-                    <div class="goal-card-actions">
-                        <button onclick="window.editGoal('${goal.id}')" title="Edit Goal"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="window.deleteGoal('${goal.id}')" class="delete-goal" title="Delete Goal"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
-                <div class="goal-stats">
-                    <span>${formatCurrency(goal.saved)}</span>
-                    <span>Target: ${formatCurrency(goal.target)}</span>
-                </div>
-                <div class="goal-progress-bar">
-                    <div class="goal-progress-fill" style="width: ${percentage}%"></div>
-                </div>
-                <div class="goal-percentage">${percentage}%</div>
-            </div>
-        `;
-    });
-    grid.innerHTML = html;
-}
-
 function switchView(targetId, navItem) {
     if (navItem.classList.contains('logout-btn')) return;
 

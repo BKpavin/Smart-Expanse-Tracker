@@ -44,10 +44,6 @@
                     <i class="fa-solid fa-bullseye"></i>
                     <span>Budget</span>
                 </a>
-                <a href="#" class="nav-item" data-target="goals">
-                    <i class="fa-solid fa-piggy-bank"></i>
-                    <span>Goals</span>
-                </a>
                 <a href="#" class="nav-item" data-target="analytics">
                     <i class="fa-solid fa-chart-line"></i>
                     <span>Analytics</span>
@@ -232,23 +228,6 @@
                         <div class="empty-state" id="transactions-empty-state">
                             <i class="fa-solid fa-magnifying-glass-dollar"></i>
                             <p>No transactions found</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Goals Section -->
-                <section id="goals" class="view-section">
-                    <div class="glass-card">
-                        <div class="card-header">
-                            <h3>Savings Goals</h3>
-                            <button class="btn btn-primary" id="add-goal-btn"><i class="fa-solid fa-plus"></i> New Goal</button>
-                        </div>
-                        <div class="goals-grid mt-4" id="goals-grid">
-                            <!-- Populated via JS -->
-                        </div>
-                        <div class="empty-state hidden" id="goals-empty-state">
-                            <i class="fa-solid fa-piggy-bank"></i>
-                            <p>No goals set yet. Start saving!</p>
                         </div>
                     </div>
                 </section>
@@ -591,32 +570,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Goal Modal -->
-    <div class="modal" id="goal-modal">
-        <div class="modal-content glass-card">
-            <h3 id="goal-modal-title">Add Goal</h3>
-            <form id="goal-form" class="mt-4">
-                <input type="hidden" id="goal-id">
-                <div class="form-group">
-                    <label for="goal-name">Goal Name</label>
-                    <input type="text" id="goal-name" class="glass-input" placeholder="e.g. Vacation" required>
-                </div>
-                <div class="form-group mt-3">
-                    <label for="goal-target">Target Amount</label>
-                    <input type="number" id="goal-target" class="glass-input" placeholder="0.00" step="0.01" required>
-                </div>
-                <div class="form-group mt-3">
-                    <label for="goal-saved">Already Saved (Optional)</label>
-                    <input type="number" id="goal-saved" class="glass-input" placeholder="0.00" step="0.01">
-                </div>
-                <div class="modal-actions mt-4">
-                    <button type="button" class="btn btn-secondary" id="close-goal-modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Goal</button>
-                </div>
-            </form>
         </div>
     </div>
 
