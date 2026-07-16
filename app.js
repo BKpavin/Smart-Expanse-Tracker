@@ -664,16 +664,27 @@ function updateBudgetView() {
 function updateReports() {
     const currentMonth = new Date().toISOString().substring(0, 7);
     const currentYear = new Date().toISOString().substring(0, 4);
+    
+    const now = new Date();
+    const todayStr = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
 
-    const mData = transactions.filter(t => t.date.startsWith(currentMonth));
+    const tData = transactions.filter(t => t.date && t.date.startsWith(todayStr));
+    const tInc = tData.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+    const tExp = tData.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+    const todayElem = document.getElementById('report-today-net');
+    if (todayElem) todayElem.innerText = formatCurrency(tInc - tExp);
+
+    const mData = transactions.filter(t => t.date && t.date.startsWith(currentMonth));
     const mInc = mData.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
     const mExp = mData.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
-    elements.document?.getElementById('report-month-net') && (document.getElementById('report-month-net').innerText = formatCurrency(mInc - mExp));
+    const monthElem = document.getElementById('report-month-net');
+    if (monthElem) monthElem.innerText = formatCurrency(mInc - mExp);
 
-    const yData = transactions.filter(t => t.date.startsWith(currentYear));
+    const yData = transactions.filter(t => t.date && t.date.startsWith(currentYear));
     const yInc = yData.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
     const yExp = yData.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
-    elements.document?.getElementById('report-year-net') && (document.getElementById('report-year-net').innerText = formatCurrency(yInc - yExp));
+    const yearElem = document.getElementById('report-year-net');
+    if (yearElem) yearElem.innerText = formatCurrency(yInc - yExp);
 
     const catSums = {};
     mData.filter(t => t.type === 'expense').forEach(t => {
@@ -685,7 +696,8 @@ function updateReports() {
     for (let c in catSums) {
         if (catSums[c] > max) { max = catSums[c]; topCat = c; }
     }
-    elements.document?.getElementById('report-top-category') && (document.getElementById('report-top-category').innerText = topCat);
+    const topCatElem = document.getElementById('report-top-category');
+    if (topCatElem) topCatElem.innerText = topCat;
 }
 
 // --- CHARTS (Analytics) ---
