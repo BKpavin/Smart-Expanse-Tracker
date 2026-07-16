@@ -806,11 +806,14 @@ function updateCharts() {
         document.getElementById('line-empty').classList.remove('hidden');
     }
 
-    const todayStr = new Date().toISOString().split('T')[0];
-    const todayExp = transactions.filter(t => t.type === 'expense' && t.date === todayStr).reduce((s, t) => s + t.amount, 0);
-    const yestD = new Date(); yestD.setDate(yestD.getDate() - 1);
-    const yestStr = yestD.toISOString().split('T')[0];
-    const yestExp = transactions.filter(t => t.type === 'expense' && t.date === yestStr).reduce((s, t) => s + t.amount, 0);
+    const now = new Date();
+    const todayStr = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+    const todayExp = transactions.filter(t => t.type === 'expense' && t.date && t.date.startsWith(todayStr)).reduce((s, t) => s + t.amount, 0);
+    
+    const yestD = new Date(now);
+    yestD.setDate(yestD.getDate() - 1);
+    const yestStr = new Date(yestD.getTime() - (yestD.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+    const yestExp = transactions.filter(t => t.type === 'expense' && t.date && t.date.startsWith(yestStr)).reduce((s, t) => s + t.amount, 0);
 
     if (charts.mini) charts.mini.destroy();
     const ctxMini = document.getElementById('miniExpenseChart').getContext('2d');
