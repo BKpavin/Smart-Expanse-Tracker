@@ -373,7 +373,6 @@ body {
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
-    white-space: nowrap;
 }
 
 .transactions-table th {
@@ -1192,6 +1191,33 @@ input:checked + .slider:before {
     .settings-grid {
         grid-template-columns: 1fr;
     }
+    
+    .transactions-table, .transactions-table tbody, .transactions-table tr, .transactions-table td {
+        display: block;
+        width: 100%;
+    }
+    .transactions-table thead {
+        display: none; /* Hide table headers */
+    }
+    .transactions-table tr {
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.02);
+        padding: 0.5rem;
+    }
+    .transactions-table td {
+        text-align: right;
+        padding: 0.5rem;
+        border-bottom: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .transactions-table td:nth-child(1)::before { content: "Description"; color: var(--text-muted); font-weight: 500; font-size: 0.85rem; }
+    .transactions-table td:nth-child(2)::before { content: "Category"; color: var(--text-muted); font-weight: 500; font-size: 0.85rem; }
+    .transactions-table td:nth-child(3)::before { content: "Date"; color: var(--text-muted); font-weight: 500; font-size: 0.85rem; }
+    .transactions-table td:nth-child(4)::before { content: "Amount"; color: var(--text-muted); font-weight: 500; font-size: 0.85rem; }
     
     .filters-container {
         flex-direction: column;
