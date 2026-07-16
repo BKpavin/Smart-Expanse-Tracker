@@ -948,6 +948,87 @@ input:checked + .slider:before {
 .toast.error { border-left-color: var(--danger-color); }
 .toast.error i { color: var(--danger-color); }
 
+/* --- GOALS VIEW --- */
+.goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.goal-card {
+    background: rgba(255,255,255,0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.dark-mode .goal-card {
+    background: rgba(0,0,0,0.2);
+    border-color: rgba(255,255,255,0.05);
+}
+
+.goal-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.goal-card-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.goal-card-actions button {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.goal-card-actions button:hover {
+    color: var(--text-color);
+}
+
+.goal-card-actions .delete-goal:hover {
+    color: var(--danger-color);
+}
+
+.goal-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.goal-progress-bar {
+    height: 8px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.dark-mode .goal-progress-bar {
+    background: rgba(255,255,255,0.1);
+}
+
+.goal-progress-fill {
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.goal-percentage {
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* --- BUDGET VIEW --- */
 /* --- Tools (Calculator & Notepad) --- */
 .tool-btn {
     background: transparent;
