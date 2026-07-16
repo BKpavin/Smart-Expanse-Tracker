@@ -506,8 +506,9 @@ function updateDashboard() {
     animateValue(elements.dashExpense, totals.expense, formatCurrency);
     animateValue(elements.dashSavings, savings, formatCurrency);
 
-    const today = new Date().toISOString().split('T')[0];
-    const todayTotals = transactions.filter(t => t.date === today).reduce((acc, t) => {
+    const now = new Date();
+    const today = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+    const todayTotals = transactions.filter(t => t.date && t.date.startsWith(today)).reduce((acc, t) => {
         if (t.type === 'income') acc.income += t.amount;
         if (t.type === 'expense') acc.expense += t.amount;
         return acc;
