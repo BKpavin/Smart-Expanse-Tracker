@@ -107,8 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const email = document.getElementById('login-email').value;
+            const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
+            console.log("Attempting login with email: '" + email + "'");
             
             const btn = e.target.querySelector('button[type="submit"]');
             const originalText = btn.innerText;
