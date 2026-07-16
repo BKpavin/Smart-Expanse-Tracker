@@ -809,30 +809,26 @@ function updateCharts() {
     const now = new Date();
     const todayStr = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
     const todayExp = transactions.filter(t => t.type === 'expense' && t.date && t.date.startsWith(todayStr)).reduce((s, t) => s + t.amount, 0);
-    
-    const yestD = new Date(now);
-    yestD.setDate(yestD.getDate() - 1);
-    const yestStr = new Date(yestD.getTime() - (yestD.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
-    const yestExp = transactions.filter(t => t.type === 'expense' && t.date && t.date.startsWith(yestStr)).reduce((s, t) => s + t.amount, 0);
+    const todayInc = transactions.filter(t => t.type === 'income' && t.date && t.date.startsWith(todayStr)).reduce((s, t) => s + t.amount, 0);
 
     if (charts.mini) charts.mini.destroy();
     const ctxMini = document.getElementById('miniExpenseChart').getContext('2d');
     charts.mini = new Chart(ctxMini, {
         type: 'bar',
         data: {
-            labels: ['Yesterday', 'Today'],
+            labels: ['Income', 'Expense'],
             datasets: [{
-                data: [yestExp, todayExp],
-                backgroundColor: ['#a3aed1', '#ee5d50'],
+                data: [todayInc, todayExp],
+                backgroundColor: ['#05cd99', '#ee5d50'],
                 borderRadius: 4
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            plugins: { legend: { display: false }, tooltip: { enabled: true } },
             scales: {
-                y: { display: false },
+                y: { display: false, beginAtZero: true },
                 x: { grid: { display: false }, border: { display: false } }
             }
         }
