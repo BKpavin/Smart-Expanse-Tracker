@@ -3,7 +3,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBX13OEp8zAtsur_jXIRWkbn4oOeBvfVQI",
+  
   authDomain: "smart-expense-tracker-5e75a.firebaseapp.com",
   projectId: "smart-expense-tracker-5e75a",
   storageBucket: "smart-expense-tracker-5e75a.firebasestorage.app",
